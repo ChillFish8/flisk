@@ -1,5 +1,5 @@
 # flisk
-A lightweight wrapper for flask
+A lightweight wrapper for flask that support full url type hinting and automatic context parsing.
 
 ## What is flisk?
 - flisk is a decorator system designed to make url routing across files easier and cleaner.
@@ -38,3 +38,15 @@ class Api(views.RouteView):
     def test(cls, request: Extensions.Request, user_id: int):
         return f"Hello! {user_id}"
 ```
+
+
+### Specifics
+
+**views.register_path()**
+- This decorator can take any combination of `name`, `classview` and `pass_request` or non at all
+- *pass_request* will only pass the request parameter if it is type hinted as `Extensions.Request`
+- flisk will automatically generate converters compatible with flask if type hinted, e.g. `user_id: int` will add `/<int:user_id>` to the url, `extra_url: Extensions.Path` will add `/<path:extra_url>` to the url that flask then registers.
+
+**Extensions**
+`Request` - a place holder for type hinting the flask request varible
+`Path` - a place holder for type hinting the path converter built into flask
