@@ -42,11 +42,11 @@ class Api(views.RouteView):
 
 ### Specifics
 
-**views.register_path()**
+**views.register_path()**<br>
 - This decorator can take any combination of `name`, `classview` and `pass_request` or non at all
 - *pass_request* will only pass the request parameter if it is type hinted as `Extensions.Request`
 - flisk will automatically generate converters compatible with flask if type hinted, e.g. `user_id: int` will add `/<int:user_id>` to the url, `extra_url: Extensions.Path` will add `/<path:extra_url>` to the url that flask then registers.
 
-**Extensions**
-`Request` - a place holder for type hinting the flask request varible
-`Path` - a place holder for type hinting the path converter built into flask
+**Extensions**<br>
+`Request` - a place holder for type hinting the flask request varible<br>
+`Path` - a place holder for type hinting the path converter built into flask<br>
