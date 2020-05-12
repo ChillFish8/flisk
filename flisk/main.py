@@ -1,4 +1,5 @@
 import importlib
+
 from flask import Flask
 
 from . import views
@@ -38,8 +39,9 @@ class FliskApp(Flask):
                 if hasattr(located_app, func):
                     func_callback = getattr(located_app, func)
                     key = func_callback.path
+                    kwargs = func_callback.kwargs
                     self.url_callbacks[key] = func_callback
-                    self.add_url_rule('/' + key, func_callback.name, func_callback)
+                    self.add_url_rule('/' + key, func_callback.name, func_callback, **kwargs)
             elif len(func) == 2:  # Class based view
                 if hasattr(located_app, func[0]):
                     class_ = getattr(located_app, func[0])
@@ -47,5 +49,6 @@ class FliskApp(Flask):
                         class_ = class_()
                         func_callback = getattr(class_, func[1])
                         key = func_callback.path
+                        kwargs = func_callback.kwargs
                         self.url_callbacks[key] = func_callback
-                        self.add_url_rule('/' + key, func_callback.name, func_callback)
+                        self.add_url_rule('/' + key, func_callback.name, func_callback, **kwargs)

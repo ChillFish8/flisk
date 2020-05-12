@@ -1,7 +1,9 @@
 import inspect
+
 from flask import request, abort
 
 from . import Extensions
+
 
 class Groupings:
     """ This class acts a sort of global container, storing the list of endpoints """
@@ -19,10 +21,11 @@ class StandardEndpoint:
             this is so the main app in Flisk will detect the route and build a url path for it
             and then register it on the site.
         """
-        self._name = kwargs.get('name', None)
+        self._name = kwargs.pop('name', None)
         if self._name is None:
             self._name = func.__name__
-        self.pass_request = kwargs.get('pass_request', False)
+        self.pass_request = kwargs.pop('pass_request', False)
+        self.kwargs = kwargs
         self.callback = func
         Groupings.site_paths.append(self)
 
@@ -86,11 +89,12 @@ class EmbededEndpoint:
             this is so the main app in Flisk will detect the route and build a url path for it
             and then register it on the site.
         """
-        self._name = kwargs.get('name', None)
+        self._name = kwargs.pop('name', None)
         if self._name is None:
             self._name = func.__name__
-        self.pass_request = kwargs.get('pass_request', False)
+        self.pass_request = kwargs.pop('pass_request', False)
         self.callback = func
+        self.kwargs = kwargs
         Groupings.site_paths.append(self)
 
     def __call__(self, *args, **kwargs):
@@ -103,7 +107,6 @@ class EmbededEndpoint:
             request_kwarg = inv_map[Extensions.Request]
             kwargs[request_kwarg] = request
         return self.callback(*args, **kwargs)
-
 
     def __str__(self):
         return self.callback.__name__

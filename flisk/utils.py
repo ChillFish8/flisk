@@ -6,9 +6,13 @@ class Extensions:
         pass
     
     class Request:
+        def __init__(self):
+            self.headers = None  # dummy field
+            self.data = None  # dummy field
+
         """ Represents the url request data """
         pass
 
 
 if __name__ == '__main__':
-    print(Extensions.site_paths)
+    pass
